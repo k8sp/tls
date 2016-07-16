@@ -146,7 +146,7 @@ CA 的private key（`ca-key.pem`）来签署 apiserver 的身份证。
 可以验证 `server.crt`，所以浏览器会提示说它不信任我们的HTTPS服务。但是
 如果用户表示信任，还是可以访问的。
 
-<img src="chrome-https-localhost.png" width=400/>
+<img src="chrome-https-localhost.png" width=500/>
 
 要想消除浏览器的提示，最简单的办法就是把我们为HTTPS服务自签署的身份证
 加入到浏览器里<sup>[chrome](#chrome)</sup>。
@@ -194,27 +194,26 @@ brew update && brew install openssl
 ## OpenSSL
 
 从上面操作可以看出来，TLS的具体操作和 OpenSSL 息息相关。关于OpenSSL的
-更多用法，可以参见
-[OpenSSL Essentials](https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs)
-。
+更多用法，可以参见<sub>[esse](#esse)</sup>。
 
 
 
 ## 参考文献
 
-1. <a name=genrsa>genrsa</a> https://www.openssl.org/docs/manmaster/apps/genrsa.html
+- <a name=genrsa>genrsa</a> https://www.openssl.org/docs/manmaster/apps/genrsa.html
 
-1. <a name=gist>gist</a> https://gist.github.com/denji/12b3a568f092ab951456
+- <a name=gist>gist</a> https://gist.github.com/denji/12b3a568f092ab951456
 
-1. <a name=pem>pem</a> https://www.namecheap.com/support/knowledgebase/article.aspx/9474/69/how-do-i-create-a-pem-file-from-the-certificates-i-received-from-you
+- <a name=pem>pem</a> https://www.namecheap.com/support/knowledgebase/article.aspx/9474/69/how-do-i-create-a-pem-file-from-the-certificates-i-received-from-you
 
-1. <a name=req>req</a> https://www.openssl.org/docs/manmaster/apps/req.html
+- <a name=req>req</a> https://www.openssl.org/docs/manmaster/apps/req.html
 
-1. <a name=sign>sign</a> https://coreos.com/kubernetes/docs/latest/openssl.html#kubernetes-api-server-keypair
+- <a name=sign>sign</a> https://coreos.com/kubernetes/docs/latest/openssl.html#kubernetes-api-server-keypair
 
-1. <a name=x509>x509</a> https://www.openssl.org/docs/manmaster/apps/x509.html
+- <a name=x509>x509</a> https://www.openssl.org/docs/manmaster/apps/x509.html
 
-1. <a name=perm>perm</a> http://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error
+- <a name=perm>perm</a> http://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error
 
-1. <a name=chrome>chrome</a> http://www.robpeck.com/2010/10/google-chrome-mac-os-x-and-self-signed-ssl-certificates/#.V4pvTJMrJhj
+- <a name=chrome>chrome</a> http://www.robpeck.com/2010/10/google-chrome-mac-os-x-and-self-signed-ssl-certificates/#.V4pvTJMrJhj
 
+- <a name=esse>esse</a> https://www.digitalocean.com/community/tutorials/openssl-essentials-working-with-ssl-certificates-private-keys-and-csrs
