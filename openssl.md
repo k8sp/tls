@@ -194,7 +194,7 @@ brew update && brew install openssl
 ## OpenSSL
 
 从上面操作可以看出来，TLS的具体操作和 OpenSSL 息息相关。关于OpenSSL的
-更多用法，可以参见<sub>[esse](#esse)</sup>。
+更多用法，可以参见<sup>[esse](#esse)</sup>。
 
 
 
