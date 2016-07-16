@@ -126,7 +126,7 @@ CA 的private key（`ca-key.pem`）来签署 apiserver 的身份证。
 	}
 	```
 
-1. 因为我们在[前面这一步](#生成身份证申请（CSR）)生成 server.csr 的时
+1. 因为我们在[前面这一步](#生成身份证申请)生成 server.csr 的时
    候，指定的域名是 localhost，所以必须确保 HTTPS 程序监听 `localhost`
    虚拟网卡上的端口 443。上面程序里指定的监听地址是`"443"`，只有端口没
    有标识网卡的IP地址或者域名，那么 `ListenAndServerTLS` 会让程序监听
