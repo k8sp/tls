@@ -40,12 +40,16 @@ HTTPS 服务。可是我从2016年7月11日到15日，找到和阅读了数十�
 1. OpenSSL 操作指南
 1. 用 Go 语言写 HTTPS 程序
 
-<!-- http://www.techradar.com/us/news/software/how-ssl-and-tls-works-1047412 -->
-<!-- https://coreos.com/kubernetes/docs/latest/openssl.html -->
-<!-- https://devcenter.heroku.com/articles/ssl-certificate-self -->
-<!-- https://devcenter.heroku.com/articles/ssl-endpoint#acquire-ssl-certificate -->
-<!-- https://gist.github.com/denji/12b3a568f092ab951456 -->
-<!-- https://help.github.com/enterprise/11.10.340/admin/articles/using-self-signed-ssl-certificates/ -->
-<!-- https://localhost -->
-<!-- https://www.namecheap.com/support/knowledgebase/article.aspx/9474/69/how-do-i-create-a-pem-file-from-the-certificates-i-received-from-you -->
-<!-- https://www.sslshopper.com/what-is-a-csr-certificate-signing-request.html -->
+## 参考文献
+
+- http://www.techradar.com/us/news/software/how-ssl-and-tls-works-1047412
+- http://tonybai.com/2015/04/30/go-and-https/
+- https://www.ibm.com/support/knowledgecenter/SSB23S_1.1.0.13/gtps7/s7cont.html
+- https://coreos.com/kubernetes/docs/latest/openssl.html
+- https://devcenter.heroku.com/articles/ssl-certificate-self
+- https://devcenter.heroku.com/articles/ssl-endpoint#acquire-ssl-certificate
+- https://gist.github.com/denji/12b3a568f092ab951456
+- https://help.github.com/enterprise/11.10.340/admin/articles/using-self-signed-ssl-certificates/
+- https://localhost
+- https://www.namecheap.com/support/knowledgebase/article.aspx/9474/69/how-do-i-create-a-pem-file-from-the-certificates-i-received-from-you
+- https://www.sslshopper.com/what-is-a-csr-certificate-signing-request.html
