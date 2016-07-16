@@ -4,12 +4,8 @@
 
 Some text in which I cite an author<sup>[1](#fn1)</sup>.
 
-More text. Another citation.[^fn2]
+以下OpenSSL的genrsa命令生成一个公钥私钥对，输出到PEM格式的文件server.key里<sup>[1](#gist)</sup>：
 
-What is this? Yet *another* citation?[^fn3]
-
-
-According to [this Gist](https://gist.github.com/denji/12b3a568f092ab951456):
 
 ```
 openssl genrsa -out server.key 2048
@@ -184,6 +180,9 @@ This
 explains that certificate is public key in clear and its digital
 signature.
 
+## 参考文献
+
+<a name=gist>1</a> https://gist.github.com/denji/12b3a568f092ab951456
 
 <a name=fn1>1</a>: So Chris Krycho, "Not Exactly a Millennium," chriskrycho.com, July 22,
     2015, http://www.chriskrycho.com/2015/not-exactly-a-millennium.html
