@@ -2,8 +2,8 @@
 
 ## 目录
 
-1. [TLS 和网络安全通信](./tls.md)
-1. OpenSSL 操作指南
+1. [TLS和安全通信](./tls.md)
+1. [OpenSSL操作指南](./openssl.md)
 1. 用 Go 语言写 HTTPS 程序
 
 ## 参考文献
