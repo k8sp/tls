@@ -26,14 +26,12 @@ TLS 依赖两种加密技术：
 
 这有一个问题：当一方生成了秘钥 K 之后得把 K 分享给另一方。但是穿越 Sin
 City 的道路危险中途很可能有人窃听到 K，窃听者就可以假扮双方中的任何一
-方与另一方通信。这叫
-*[中间人攻击（man-in-the-middle attack）](https://en.wikipedia.org/wiki/Man-in-the-middle_attack)*
-。
+方与另一方通信。这叫中间人攻击<sup>[mim](#mim)</sup>。
 
 
 ## 非对称加密
 
-非对称加密利用一对儿两个秘钥：K1 和 K2。小红用其中一个加密文本，小明可
+非对称加密利用成对的两个秘钥：K1 和 K2。小红用其中一个加密文本，小明可
 以用另一个解密文本。比如，小红用 K1 加密，小明用 K2 解密：
 
 ```
@@ -58,29 +56,29 @@ City 的道路危险中途很可能有人窃听到 K，窃听者就可以假扮�
 
 数字签名的做法是：
 
-1. 把小红的公钥（K1）和小红的ID（身份证号码，或者域名）合称为小红的*身
-   份证申请（certificate signing request，CSR）*，
+1. 把小红的公钥和小红的ID（身份证号码，或者域名）合称为小红的*身份证申
+   请（certificate signing request，CSR）*，
 1. 找一个德高望重的人（被称为 certificate authority，CA），比如小亮，
-   用自己的私钥（A2）加密小红的 CSR，得到的密文被称为*数字签名
-   （digital signature）*，
+   用自己的私钥加密小红的 CSR，得到的密文被称为*数字签名（digital
+   signature）*，
 1. 然后把 signature 和 CSR 的明文合在一起称为 *CA签署的身份证（CA
    signed certificate，CRT）*，发布出去。
 
 ```
-小红：CSR = 小红公钥+小红身份证号
-     signature = E(CSR, A2)
+小红：CSR = 小红公钥+小红域名
+     signature = E(CSR, 小亮的私钥)
      CRT = CSR + signature
 ```
 
-注意，因为A2是私钥，CA 小亮不会公开。所以上述过程实际上是，小红把自己
-的CSR给了 CA，CA 负责签署，然后把自己签署的小红的身份证（CRT）发给小明。
+注意，小亮不能公开自己的私钥，所以上述过程实际上是，小红把自己的CSR给
+了 CA，CA 负责签署，然后把自己签署的小红的身份证（CRT）发给小明。
 
 拿到这个身份证的人，不管是中间人还是小明还是其他人，都可以用 CA 小亮的
-公钥（A1）解开其中的signature，从而验证解密结果和身份证里的CSR明文是否
-一致。如果一致，则说明“这个小红的身份证是小亮确认过并且签名的”。
+公钥解开其中的signature，从而验证解密结果和身份证里的CSR明文是否一致。
+如果一致，则说明“这个小红的身份证是小亮确认过并且签名的”。
 
 ```
-小明：CSR' = D(CRT.signature, A1)
+小明：CSR' = D(CRT.signature, 小亮的公钥)
      if CSR' == CRT.CSR then OK
 ```
 
@@ -94,16 +92,16 @@ Mozilla、IE）会内置一些靠谱的 CA 的身份证。但是有没有 CA 冒
 ## 信任链
 
 小亮如果担心没有人信任自己是个好 CA（就像没人信CNNIC一样），可以找一个
-大家都信的 CA，比如老王，用老王的私钥 A'2 在小亮的身份证上签名：
+大家都信的 CA，比如老王，用老王的私钥在小亮的身份证上签名：
 
 ```
-小亮：CSR = 小亮的公钥+小亮身份证号码
-     signature = E(CSR, A'2)
+小亮：CSR = 小亮的公钥+小亮域名
+     signature = E(CSR, 老王的私钥)
      CRT = CSR + signature
 ```
 
-其中 A'2 是老王的私钥。如果浏览器或者操作系统里安装了老王的公钥 A'1，
-则可以验证“小亮的身份证是老王确认并且签名过的”。
+如果浏览器或者操作系统里安装了老王的公钥则可以验证“小亮的身份证是老王
+确认并且签名过的”。
 
 这样，小亮在签署小红的身份证的时候，可以在小红身份证后面附上自己的身份
 证。这样小红的身份证就有“两页”了。
@@ -116,9 +114,9 @@ Mozilla、IE）会内置一些靠谱的 CA 的身份证。但是有没有 CA 冒
 1. 然后小明用小亮身份证里的公钥验证小红的身份证。
 
 要是怕小明连自己也也不信任，老王可以再找一个小明信任的人来签名确认自己
-的身份证。这个过程可以不断递推，从而形成了一条
-[*信任链（trust of chain)*](https://en.wikipedia.org/wiki/Chain_of_trust)
-。
+的身份证。这个过程可以不断递推，从而形成了一条信任链（trust of
+chain)<sup>[chain](#chain)</sup>。
+
 
 ## 根身份证和自签名
 
@@ -133,6 +131,22 @@ Mozilla、IE）会内置一些靠谱的 CA 的身份证。但是有没有 CA 冒
 任何人只要信任我们自签名的身份证 CRT，也就可以用 CRT.CSR.K2 作为公钥加
 密要传递给我们的文本。我们可以用自己的私钥 K1 来解密文本。
 
+如果老王就是根CA了，那么上述各位的身份证的信任链如下：
+
+```
+小红：CSR = 小红公钥+小红域名
+     signature = E(CSR, 小亮的私钥)
+     CRT = CSR + signature
+
+小亮：CSR = 小亮的公钥+小亮域名
+     signature = E(小亮的CSR, 老王的私钥)
+     CRT = 小亮的CSR + signature
+
+老王：CSR = 老王的公钥+老王的域名
+     signature = E(老王的CSR, 老王自己的私钥)
+     CRT = 老王的CSR + signature
+```
+
 ## 双方认证
 
 上述例子解释了通信的一方如何验证另一方的身份。这种情况的一个常见应用是：
@@ -143,7 +157,7 @@ Mozilla、IE）会内置一些靠谱的 CA 的身份证。但是有没有 CA 冒
 光操作机群的客户端程序 kubectl 要能验证 Kubernetes master node（具体的
 说是 apiserver）的身份，才能放心地把包括敏感信息（比如数据库密码）的计
 算作业提交给 apiserver。类似的，apiserver也要能验证 kubectl 的身份，以
-确认提交作业的是公司的合法雇员，而不是外贼。
+确认提交作业的是公司的合法雇员，而不是外贼<sup>[sign](#sign)</sup>。
 
 为此，通信双方（比如小红和小明）都需要有个字的身份证。如果小红、小明是
 同一个公司的雇员，那么他俩可以都找公司负责人小亮签名确认自己的身份证。
@@ -151,3 +165,11 @@ Mozilla、IE）会内置一些靠谱的 CA 的身份证。但是有没有 CA 冒
 
 上面介绍的概念在实际操作中往往是靠开源工具 `openssl` 实现的。
 [下一篇](./openssl.md)介绍如何使用 `openssl`。
+
+## 参考文献
+
+- <a name=mim>mim</a> https://en.wikipedia.org/wiki/Man-in-the-middle_attack
+
+- <a name=chain>chain</a> https://en.wikipedia.org/wiki/Chain_of_trust
+
+- <a name=sign>sign</a> https://coreos.com/kubernetes/docs/latest/openssl.html#kubernetes-api-server-keypair
