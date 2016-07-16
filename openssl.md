@@ -25,10 +25,10 @@ yKTM+eoxBvptGrkEixhljqHSuE+ucTh3VqYQsgO6+8Wbh1docbFUKzLKHrferJBH
 包括私钥<sup>[genrsa](#genrsa)</sup>。
 
 
-## 生成身份证申请（CSR）
+## 生成身份证申请
 
 以下OpenSSL的req命令<sup>[req](#req)</sup>以上文中的 `server.key` 为输
-入，生成一个 CSR 文件 `server.csr`。
+入，生成一个身份证申请（CSR）文件 `server.csr`。
 
 ```
 openssl req -nodes -new -key server.key -subj "/CN=localhost" -out server.csr
@@ -48,7 +48,7 @@ MIIC0TCCAbkCAQAwgYsxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTERMA8GA1UE
 ```
 
 
-## 签名身份证（Signed Certificate）
+## 签署身份证
 
 以下OpenSSL的x509命令<sup>[x509](#x509)</sup>用指定的私钥 `server.key`
 签署 `server.csr`，输出身份证 `server.crt`：
@@ -90,7 +90,7 @@ $ openssl x509 -req -in apiserver.csr -CA ca.pem -CAkey ca-key.pem -CAcreateseri
 CA 的private key（`ca-key.pem`）来签署 apiserver 的身份证。
 
 
-## 把私钥和证书用在HTTPS server里
+## HTTPS Server
 
 现在我们有了 `server.key` 和 `server.crt`。我们可以写一个HTTPS服务程序，
 它私藏 `server.key`，同时在与任何客户端程序首轮通信的时候通告自己的身
@@ -139,7 +139,11 @@ CA 的private key（`ca-key.pem`）来签署 apiserver 的身份证。
 1. 同样的原因，客户端必须通过 `localhost` 访问我们的 HTTPS 服务。在这
    个例子里，`localhost` 域名意味着只有本机上执行的客户端才能访问。
 
-## 通过浏览器访问
+
+
+## 访问TLS服务
+
+### 用浏览器
 
 我们可以通过浏览器访问我们的 HTTPS server。但是因为server的身份证是我
 们自签署的，浏览器里没有[CA的身份证](./tls.md#数字签名和CA)其中的公钥
@@ -157,7 +161,7 @@ CA 的private key（`ca-key.pem`）来签署 apiserver 的身份证。
 用这个内部CA来签署。这样用公司的电脑，即可访问这些服务。
 
 
-## 用curl访问TLS服务
+### 用curl
 
 类似的，我们可以通过加 `-k` 参数让 `curl` 信任我们的HTTPS 服务器：
 
@@ -189,7 +193,6 @@ package 里实现的高级加密算法，所以我们得用 Homebrew 安装新�
 ```
 brew update && brew install openssl
 ```
-
 
 ## OpenSSL
 
