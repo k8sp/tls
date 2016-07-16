@@ -1,6 +1,6 @@
 # TLS完全指南
 
-## 内容目录
+## 目录
 
 1. [TLS 和网络安全通信](./tls.md)
 1. OpenSSL 操作指南
@@ -16,11 +16,10 @@
 - https://devcenter.heroku.com/articles/ssl-endpoint#acquire-ssl-certificate
 - https://gist.github.com/denji/12b3a568f092ab951456
 - https://help.github.com/enterprise/11.10.340/admin/articles/using-self-signed-ssl-certificates/
-- https://localhost
 - https://www.namecheap.com/support/knowledgebase/article.aspx/9474/69/how-do-i-create-a-pem-file-from-the-certificates-i-received-from-you
 - https://www.sslshopper.com/what-is-a-csr-certificate-signing-request.html
 
-## 附录：为什么要写这篇文章
+## 为什么要写这篇文章
 
 ### TLS很有用
 
@@ -38,7 +37,7 @@ server 的人才会关注。可实际上 TLS 设置和公司的域名相关，�
 
 我以为应该很容易找到 TLS 的资料，因为那么多大大小小的公司都需要配置
 HTTPS 服务。可是我从2016年7月11日到15日，找到和阅读了数十篇相关文章
-（部分附后），却没有一篇全面覆盖了以下几个方面：
+（部分见[参考文献](#参考文献)），却没有一篇全面覆盖了以下几个方面：
 
 1. TLS 解决的问题和利用的密码学原理，
 2. 实践操作，比如用openssl生成秘钥和CSR、签署certificate。配置根证书和
