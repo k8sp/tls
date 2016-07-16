@@ -2,16 +2,14 @@
 
 ## 生成RSA秘钥对
 
-Some text in which I cite an author<sup>[1](#fn1)</sup>.
-
-以下OpenSSL的genrsa命令生成一个公钥私钥对，输出到PEM格式的文件server.key里<sup>[1](#gist)</sup>：
-
+以下OpenSSL的genrsa<sup>[genrsa](#genrsa)</sup>命令生成一个2048 bit的公钥私
+钥对，输出到文件server.key里<sup>[gist](#gist)</sup>：
 
 ```
 openssl genrsa -out server.key 2048
 ```
 
-The output file is in [PEM format](#pem-file-format):
+`server.key`是PEM格式<sup>[pem](#pem)</sup>的：
 
 ```
 -----BEGIN RSA PRIVATE KEY-----
@@ -23,34 +21,21 @@ yKTM+eoxBvptGrkEixhljqHSuE+ucTh3VqYQsgO6+8Wbh1docbFUKzLKHrferJBH
 -----END RSA PRIVATE KEY-----
 ```
 
-The `server.key` contains only the private key. Nothing else there
-like the paired public key.
+虽说文件头尾都标注着`RSA PRIVATE KEY`，但实际上这个文件里既包括公钥也
+包括私钥<sup>[genrsa](#genrsa)</sup>。
 
-Above command doesn't need passphrase.  By
-[this Heroku tutorial](https://devcenter.heroku.com/articles/ssl-endpoint#acquire-ssl-certificate),
-the following command need passphrase:
 
-```
-openssl genrsa -des3 -out server.key 2048
-```
+### 生成身份证申请（CSR）
 
-But the passphrase can strip off by using this command:
+以下OpenSSL的req命令<sup>[req](#req)</sup>以上文中的 `server.key` 为输
+入，生成一个 CSR 文件 `server.csr`。
 
 ```
-openssl rsa -in server.pass.key -out server.key
+openssl req -nodes -new -key server.key -subj "/CN=localhost" -out server.csr
 ```
 
-### Generate Certificate Signing Request
-
-By [this Heroku tutorial](https://devcenter.heroku.com/articles/ssl-certificate-self):
-
-```
-openssl req -nodes -new -key server.key -out server.csr
-```
-
-This requires input of identification information.
-
-The generated server.csr file is also in PEM format:
+这个 CSR 里的域名是 `localhost`，公钥是从 `server.key` 里提取出来的。
+`server.csr`文件也是PEM格式的，文件头尾标注为 `CERTIFICATE REQUEST`:
 
 ```
 -----BEGIN CERTIFICATE REQUEST-----
@@ -59,22 +44,31 @@ MIIC0TCCAbkCAQAwgYsxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTERMA8GA1UE
 -----END CERTIFICATE REQUEST-----
 ```
 
-According to
-[sslshoper.com's page](https://www.sslshopper.com/what-is-a-csr-certificate-signing-request.html),
-the CSR contains identification information like the FQDN and the
-public key automatically created from the given private key.
 
+### 签名身份证（Signed Certificate）
 
-### Self-Signed Certificate
-
-According to
-[this Heroku tutorial](https://devcenter.heroku.com/articles/ssl-certificate-self),
-we can generate a self-signed certificate from the CSR and the private
-key:
+以下OpenSSL的x509命令用指定的私钥 `server.key` 签署 `server.csr`，输出身份证 `server.crt`：
 
 ```
 openssl x509 -req -sha256 -days 365 -in server.csr -signkey server.key -out server.crt
 ```
+
+在这个例子里，用来签署CSR的私钥和 CSR 里的公钥是一对儿。也就是说这是一
+个自签名（self-sign）的例子。
+
+通常情况下，我们会用一个CA的私钥来签署一个CSR。在这个为 Kubernetes
+apiserver 签署身份证的例子<sup>[sign](#sign)</sup>里，apiserver 的身份
+证是用一个自签署的CA的私钥来签署的：
+
+```
+$ openssl genrsa -out ca-key.pem 2048
+$ openssl req -x509 -new -nodes -key ca-key.pem -days 10000 -out ca.pem -subj "/CN=kube-ca"
+
+$ openssl genrsa -out apiserver-key.pem 2048
+$ openssl req -new -key apiserver-key.pem -out apiserver.csr -subj "/CN=kube-apiserver" -config openssl.cnf
+$ openssl x509 -req -in apiserver.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out apiserver.pem -days 365 -extensions v3_req -extfile openssl.cnf
+```
+
 
 [This gist](https://gist.github.com/denji/12b3a568f092ab951456) shows
 that we can generate the certificate without the intermediate step of
@@ -182,12 +176,12 @@ signature.
 
 ## 参考文献
 
-<a name=gist>1</a> https://gist.github.com/denji/12b3a568f092ab951456
+1. <a name=genrsa>genrsa</a> https://www.openssl.org/docs/manmaster/apps/genrsa.html
 
-<a name=fn1>1</a>: So Chris Krycho, "Not Exactly a Millennium," chriskrycho.com, July 22,
-    2015, http://www.chriskrycho.com/2015/not-exactly-a-millennium.html
-    (accessed July 25, 2015), ¶6.
+1. <a name=gist>gist</a> https://gist.github.com/denji/12b3a568f092ab951456
 
-[^fn2]: Contra Krycho, ¶15, who has everything *quite* wrong.
+1. <a name=pem>pem</a> https://www.namecheap.com/support/knowledgebase/article.aspx/9474/69/how-do-i-create-a-pem-file-from-the-certificates-i-received-from-you
 
-[^fn3]: ibid.
+1. <a name=req>req</a> https://www.openssl.org/docs/manmaster/apps/req.html
+
+1. <a name=sign>sign</a> https://coreos.com/kubernetes/docs/latest/openssl.html#kubernetes-api-server-keypair
