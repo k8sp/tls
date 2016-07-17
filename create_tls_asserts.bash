@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 openssl genrsa -out server.key 2048
 openssl req -nodes -new -key server.key -subj "/CN=localhost" -out server.csr

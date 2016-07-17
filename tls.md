@@ -58,13 +58,10 @@ City 的道路危险中途很可能有人窃听到 K，窃听者就可以假扮�
 
 数字签名的做法是：
 
-1. 把小红的公钥和小红的ID（身份证号码，或者域名）合称为小红的*身份证申
-   请（certificate signing request，CSR）*，
-1. 找一个德高望重的人（被称为 certificate authority，CA），比如小亮，
-   用自己的私钥加密小红的 CSR，得到的密文被称为*数字签名（digital
-   signature）*，
-1. 然后把 signature 和 CSR 的明文合在一起称为 *CA签署的身份证（CA
-   signed certificate，CRT）*，发布出去。
+1. 小红把自己的公钥和ID（身份证号码，或者域名）合为*身份证申请（certificate signing request，CSR）*，
+1. 小红把CSR发给一个德高望重的人（被称为 certificate authority，CA），比如小亮，
+1. 小亮用自己的私钥加密小红的 CSR，得到的密文被称为*数字签名（digital signature）*，
+1. 小亮把 signature 和 CSR 的明文合在一起称为 *CA签署的身份证（CA signed certificate，CRT）*，发给小红，
 
 ```
 小红：CSR = 小红公钥+小红域名
@@ -72,18 +69,19 @@ City 的道路危险中途很可能有人窃听到 K，窃听者就可以假扮�
      CRT = CSR + signature
 ```
 
-注意，小亮不能公开自己的私钥，所以上述过程实际上是，小红把自己的CSR给
-了 CA，CA 负责签署，然后把自己签署的小红的身份证（CRT）发给小明。
-
 [这里](./openssl.md#生成身份证申请)有一个用OpenSSL生成CSR的例子。 签署
 CSR的例子在[这里](./openssl.md#签署身份证)。
 
-拿到这个身份证的人，不管是中间人还是小明还是其他人，都可以用 CA 小亮的
-公钥解开其中的signature，从而验证解密结果和身份证里的CSR明文是否一致。
-如果一致，则说明“这个小红的身份证是小亮确认过并且签名的”。
+每当其他人（比如小明）找小红聊天（建立HTTPS连接）的时候，小红出示自己的小亮签署的身份证。
+拿到这个身份证的人，只要他是相信小亮的——在自己机器上安装了小亮的身份证，就可以
+
+1. 从小亮的身份证中的小亮的CSR里提取小亮的公钥；
+1. 然后用小亮的公钥解密小红的身份证中小亮的signature，得到一个小红的CSR'；
+1. 如果这个CSR'和小红身份证中的CSR明文一致，则说明“这个小红的身份证是小亮确认过并且签名的”。
 
 ```
-小明：CSR' = D(CRT.signature, 小亮的公钥)
+小明：小亮的公钥 = 小亮的CRT.CSR.小亮的公钥
+     CSR' = D(CRT.signature, 小亮的公钥)
      if CSR' == CRT.CSR then OK
 ```
 
@@ -91,8 +89,8 @@ CSR的例子在[这里](./openssl.md#签署身份证)。
 己的私钥去加密别人的认证。那我们要是信错了 CA，被他摆一道怎么办？答案
 是：没办法。我们选择信任社会，要相信如果 CA 说谎，万一被识破，就没有人
 再相信他了。现实中，很多操作系统（Windows、Mac OS X）和浏览器（Chrome、
-Mozilla、IE）会内置一些靠谱的 CA 的身份证。但是有没有 CA 冒天下之大不
-违说谎呢？据传说有一个自称 CNNIC 的机构说过谎。
+Firefox、IE）会内置一些靠谱的 CA 的身份证。但是有没有 CA 冒天下之大不
+韪说谎呢？据传说有一个自称 CNNIC 的机构说过谎。
 
 
 ## 信任链
