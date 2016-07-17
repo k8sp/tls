@@ -133,7 +133,7 @@ CA 的private key（`ca-key.pem`）来签署 apiserver 的身份证。
    本机所有网卡上的 443 端口。
 
    ```
-   sudo go run server.go
+   sudo go run server.go &
    ```
 
 1. 同样的原因，客户端必须通过 `localhost` 访问我们的 HTTPS 服务。在这
