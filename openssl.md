@@ -182,8 +182,8 @@ $ curl --cacert server.crt https://localhost
 hello, world!
 ```
 
-如果手边没有 `server.crt`，我们甚至可以用 openssl 工具找我们的 HTTPS
-server 要一份：
+<a name=showcerts />如果手边没有 `server.crt`，我们甚至可以用 openssl
+工具找我们的 HTTPS server 要一份：
 
 ```
 $ /usr/local/Cellar/openssl/1.0.2h/bin/openssl s_client -showcerts -connect localhost:443 > cacert.pem
@@ -198,11 +198,14 @@ package 里实现的高级加密算法，所以我们得用 Homebrew 安装新�
 brew update && brew install openssl
 ```
 
-## OpenSSL
+## 下一步
 
 从上面操作可以看出来，TLS的具体操作和 OpenSSL 息息相关。关于OpenSSL的
 更多用法，可以参见<sup>[esse](#esse)</sup>。
 
+当我们用 OpenSSL 创建了CA身份证并且用CA身份证给相关程序签署了各自的身
+份证之后，我们就可以开工写作和调试这些程序了。在[下一篇](./golang.md)
+里，我们介绍如何用Go语言写HTTPS的server和client。
 
 
 ## 参考文献
