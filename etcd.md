@@ -66,7 +66,16 @@ for (( i = 1; i <= 3; i++ )); do
 done
 ```
 
-我们可以运行附带的 `init.bash` 来下载和安装 etcd，然后运行 `etcd.bash` 来在本机启动etcd机群。然后我们可以用如下命令验证对这个机群的访问
+我们可以运行附带的 [`init.bash`](./etcd/init.bash) 来下载和安装 etcd，
+然后运行 [`etcd.bash`](./etcd/etcd.bash) 来在本机启动etcd机群。
+
+```
+cd etcd
+./init.bash
+./etcd.bash
+```
+
+然后我们可以用如下命令验证对这个机群的访问：
 
 ```
 $ ./etcd/etcdctl -C https://localhost:23791 --ca-file ca.crt --key-file server.key --cert-file server.crt set foo bar
@@ -75,7 +84,7 @@ $ ./etcd/etcdctl -C https://localhost:23791 --ca-file ca.crt --key-file server.k
 bar
 ```
 
-如果不告诉客户端它的十分钟，那么etcd机群应该因为无法验证客户端身份而报错。比如：
+如果不告诉客户端它的身份证，那么etcd机群应该因为无法验证客户端身份而报错：
 
 ```
 $ ./etcd/etcdctl -C https://localhost:23791 --ca-file ca.crt  set get foo
