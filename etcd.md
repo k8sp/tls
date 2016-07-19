@@ -11,7 +11,7 @@ TLS身份证互相验证身份。前一种验证可以保证没有恶意etcd进�
 
 etcd每个成员都可以监听一个peer端口——只要互相知道对方的host域名和peer端
 口，就可以互相确认身份，组成一个机群。此外，每个成员都可以监听一个
-client端口，用来和客户端通信。
+client端口，和客户端通信。
 
 在下面这个例子里，我们启动一个三个成员的etcd机群。这三个进程都运行来本
 地，而且我们准备客户端也运行在本地，所以etcd机群的host域名可以就是
@@ -78,10 +78,10 @@ cd etcd
 然后我们可以用如下命令验证对这个机群的访问：
 
 ```
-$ ./etcd/etcdctl -C https://localhost:23791 --ca-file ca.crt --key-file server.key --cert-file server.crt set foo bar
-bar
-$ ./etcd/etcdctl -C https://localhost:23791 --ca-file ca.crt --key-file server.key --cert-file server.crt get foo
-bar
+$ ./etcd/etcdctl -C https://localhost:23791 --ca-file ca.crt --key-file client.key --cert-file client.crt set hello world
+world
+$ ./etcd/etcdctl -C https://localhost:23791 --ca-file ca.crt --key-file client.key --cert-file client.crt get hello
+world
 ```
 
 如果不告诉客户端它的身份证，那么etcd机群应该因为无法验证客户端身份而报错：
@@ -90,6 +90,15 @@ bar
 $ ./etcd/etcdctl -C https://localhost:23791 --ca-file ca.crt  set get foo
 Error:  remote error: bad certificate
 ```
+
+结束试验只需要
+
+```
+killall etcd
+```
+
+即可杀掉etcd机群。
+
 
 ## 参考文献
 

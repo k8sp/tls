@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -rf *.etcd # clear existing data directories.
+
 for (( i = 1; i <= 3; i++ )); do
     ./etcd/etcd \
 	--name infra$i \
@@ -8,7 +10,7 @@ for (( i = 1; i <= 3; i++ )); do
 	--cert-file ./server.crt \
 	--key-file ./server.key \
 	--client-cert-auth \
-	--ca-file ca.crt \
+	--trusted-ca-file ca.crt \
 	\
 	--initial-advertise-peer-urls https://localhost:2380$i \
 	--listen-peer-urls https://localhost:2380$i \
