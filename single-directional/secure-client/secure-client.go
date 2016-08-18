@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/tls"
 	"crypto/x509"
+	"flag"
 	"io"
 	"io/ioutil"
 	"log"
@@ -11,12 +12,16 @@ import (
 )
 
 func main() {
+	flagCrt := flag.String("cert", "server.crt", "TLS certificate file.")
+	flagUrl := flag.String("url", "https://localhost", "URL to be accessed.")
+	flag.Parse()
+
 	c := &http.Client{
 		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{RootCAs: loadCA("server.crt")},
+			TLSClientConfig: &tls.Config{RootCAs: loadCA(*flagCrt)},
 		}}
 
-	if resp, e := c.Get("https://localhost"); e != nil {
+	if resp, e := c.Get(*flagUrl); e != nil {
 		log.Fatal("http.Client.Get: ", e)
 	} else {
 		defer resp.Body.Close()
