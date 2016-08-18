@@ -8,7 +8,6 @@ openssl genrsa -out ca.key 2048
 
 openssl req -x509 -new -nodes -key ca.key -days 10000 -out ca.crt -subj "/CN=we-as-ca"
 
-
 # 2. 创建server的私钥，CSR，并且用CA的私钥自签署server的身份证：
 
 openssl genrsa -out server.key 2048
