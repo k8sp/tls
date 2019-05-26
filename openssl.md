@@ -91,8 +91,8 @@ CA 的private key（`ca-key.pem`）来签署 apiserver 的身份证。
 
 注意，签署 `apiserver.csr` 得到 apiserver 的身份证（`apiserver.pem`）
 的过程中，不仅需要 `ca-key.pem`，还需要CA的身份证 `ca.pem`，因为
-`apiserver.pem` 里附上了 CA 的身份证。从而构成一个[信任链](./tls.md#信
-任链)。
+`apiserver.pem` 里附上了 CA 的身份证。从而构成一个
+[信任链](./tls.md#信任链)。
 
 ## HTTPS Server
 
