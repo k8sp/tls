@@ -210,17 +210,17 @@ brew update && brew install openssl
 
 ## 参考文献
 
-- <a name=genrsa>genrsa</a> https://www.openssl.org/docs/manmaster/apps/genrsa.html
+- <a name=genrsa>genrsa</a> https://www.openssl.org/docs/manmaster/man1/genrsa.html
 
 - <a name=gist>gist</a> https://gist.github.com/denji/12b3a568f092ab951456
 
 - <a name=pem>pem</a> https://www.namecheap.com/support/knowledgebase/article.aspx/9474/69/how-do-i-create-a-pem-file-from-the-certificates-i-received-from-you
 
-- <a name=req>req</a> https://www.openssl.org/docs/manmaster/apps/req.html
+- <a name=req>req</a> https://www.openssl.org/docs/manmaster/man1/req.html
 
 - <a name=sign>sign</a> https://coreos.com/kubernetes/docs/latest/openssl.html#kubernetes-api-server-keypair
 
-- <a name=x509>x509</a> https://www.openssl.org/docs/manmaster/apps/x509.html
+- <a name=x509>x509</a> https://www.openssl.org/docs/manmaster/man1/x509.html
 
 - <a name=perm>perm</a> http://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error
 
