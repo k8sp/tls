@@ -14,7 +14,7 @@
 ### HTTPS服务器程序
 
 [上文](./openssl.md#https-server)中我们贴了一个用Go语言写的HTTPS
-server程序`[./server.go](./server.go)`：
+server程序[server.go](./server.go)：
 
 ```
 package main
@@ -35,7 +35,7 @@ func main() {
 }
 ```
 
-我们可以用`[create_tls_asserts.bash](./create_tls_asserts.bash)`创建私
+我们可以用[create_tls_asserts.bash](./create_tls_asserts.bash)创建私
 钥 `server.key`和身份证`server.crt`，
 
 ```
@@ -54,7 +54,7 @@ sudo go run server.go &
 
 [上文](./openssl.md#https-server)中我们展示了可以给curl一个`-k`参数，
 让它不验证服务器身份即访问。我们自己也写一个类似`curl -k`的client程序
-`[unsecure-client.go](./unsecure-client.go)`来坚持访问一个不一定安全的
+[unsecure-client.go](./unsecure-client.go)来坚持访问一个不一定安全的
 HTTPS server：
 
 ```
@@ -95,7 +95,7 @@ hello, world!
 [上文](./openssl.md#https-server)中我们还展示了可以把服务器的身份证
 `server.crt`通过`--cacert`参数传给curl，让curl用服务器自己的身份证验证
 它自己。类似的，我们也可以写一个类似`curl --cacert server.crt`的Go程序
-`[secure-client.go](./secure-client.go)`来访问HTTPS server。这个程序和
+[secure-client.go](./secure-client.go)来访问HTTPS server。这个程序和
 上一个的区别仅仅在于 `TLSClientConfig` 的配置方式：
 
 ```
@@ -168,7 +168,7 @@ func loadCA(caFile string) *x509.CertPool {
 ### Server
 
 相对于上面的例子，server的源码
-`[./bidirectional/server.go](./bidirectional/server.go)`稍作了一些修改：
+[bidirectional/server.go](./bidirectional/server.go)稍作了一些修改：
 增加了一个 `http.Server` 变量`s`，并且调用`s.ListenAndServeTLS`，而不
 是像之前那样直接调用`http.ListenAndServeTLS`了：
 
@@ -194,7 +194,7 @@ func main() {
 
 ### Client
 
-客户端程序`[./bidirectional/client.go](./bidirectional/client.go)`相对
+客户端程序[bidirectional/client.go](./bidirectional/client.go)相对
 于上面提到的`unsecure-client.go`和`secure-client.go`的变化主要在于
 
 1. 调用`tls.LoadX509KeyPair`读取`client.key`和`client.crt`，并返回一个
